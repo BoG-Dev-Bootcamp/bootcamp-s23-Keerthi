@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import Dog from "./models/dog.js"
 
 /** 
 Get a dog from the db based on a specific attribute
@@ -10,7 +11,12 @@ Get a dog from the db based on a specific attribute
 
 */
 const readDog = async (identifier) => {
-
+    try {
+        const dog = await Dog.findOne(identifier)
+        return dog
+    } catch (e) {
+        console.log('Error:', e.message);
+    }
 }
 
 /** 
@@ -22,7 +28,12 @@ Get all dogs from the db
 
 */
 const readDogs = async () => {
-
+    try {
+        const dogs = await Dog.find()
+        return dogs
+    } catch (e) {
+        console.log('Error:', e.message);
+    }
 }
 
 /** 
@@ -35,7 +46,14 @@ Create a new dog and save it to the db
 
 */
 const createDog = async (newDogData) => {
-
+    try {
+        const newDog = await new Dog(newDogData)
+        await newDog.save()
+    } catch (e) {
+        console.log(e.message)
+        return false;
+    }
+    return true;
 }
 
 /** 
@@ -51,7 +69,13 @@ Dog object should remain but the specificed attributes should be changed.
 
 */
 const updateDog = async (identifier, newDogData) => {
-
+    try {
+        await Dog.findOneAndUpdate(identifier, newDogData)
+        return true
+    } catch (e) {
+        console.log('Error: ', e.message)
+        return false
+    }
 }
 /** 
 Remove a dog from the db based on a specific attribute
@@ -63,7 +87,13 @@ Remove a dog from the db based on a specific attribute
 
 */
 const deleteDog = async (identifier) => {
-
+    try {
+        await Dog.findOneAndDelete(identifier)
+        return true
+    } catch (e) {
+        console.log('Error: ', e.message)
+        return false
+    }
 }
 
 export { readDog, readDogs, createDog, updateDog, deleteDog }

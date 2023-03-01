@@ -9,10 +9,11 @@ mongoose.set('strictQuery', false);
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(`${process.env.DB_URL}`)
+        const db = await mongoose.connect(`${process.env.DB_URL}`)
         await Dog.deleteMany({})
         console.log("Sucessfully connected to the database!")
     } catch (e) {
+        console.log(e.message)
         console.log("Failed to connect to the database :(")
     }
 }
